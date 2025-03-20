@@ -151,45 +151,93 @@ erstellen. Der erste Vorgang dauert je nach Hardware >1h.
 
 Genügend Zeit, um das Mittagessen 🍲 vorzubereiten 
 
-##### Herzlichen Glückwunsch! Es ist vollbracht 🎉
+###### 🥳 Herzlichen Glückwunsch! Es ist vollbracht 🎉
 
 
+# 3. Github Repo klonen
+```
+git clone https://github.com/fabianpingel/Yolov11.git
+```
 
-# 🚧 Folgende Abschnitte sind noch im Aufbau...!
 
+# 4. Ultralytics installieren
+https://docs.ultralytics.com/de/models/yolo11/
 
-
-
-# 3. Ultralytics installieren
-
-## 1. virtuelle Umgebung installieren
+### 4.1. virtuelle Umgebung erzeugen
 ```
 python -m venv env
 ```
+und aktivieren mit
+```
+env\Scripts\activate
+```
 
-## pip upgraden
+Jetzt sollte ein `(env)` vor jeder Kommendozeile stehen. 
+
+⚠️ Alle weiteren Schritt im geklonten, lokalen Repo durchführen oder im Terminal des Code Editors.
+
+### 4.2 PIP upgraden 
+(falls nicht bereits oben geschehen)
 ```
 python.exe -m pip install --upgrade pip
 ```
 
-## Requirements installieren
+### 4.3. Requirements installieren
 ```
 pip install -r requirements.txt
 ```
 
-## PyTorch
+### 4.4 PyTorch in virtueller Umgebung installieren 
+(ich weiß, ist doppelt, aber notwendig...)
 ```
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 ```
 
-## TorchVision
-Download latest whl: https://download.pytorch.org/whl/torchvision/
+### 4.5 Torchvision
+Torchvision muss für GPU support manuell nachinstalliert werden!
+
+Download latest python whl: https://download.pytorch.org/whl/torchvision/
 
 ```
 pip install C:\Users\FPingel\Downloads\torchvision-0.21.0+cu126-cp311-cp311-win_amd64.whl
 ```
 
-# Prepare
-Download models from:
-https://docs.ultralytics.com/models/yolo11/#supported-tasks-and-modes
+Mit `pip list` prüfen, ob die '+cu126' Build-Variante hinter den torch-Versionen steht.
+
+### 4.6. Modelle herunterladen
+Die Yolo-Modelle können je nach Aufgabe [hier](https://docs.ultralytics.com/de/models/yolo11/#supported-tasks-and-modes) heruntergeladen werden.
+
+- Detect: https://docs.ultralytics.com/de/tasks/detect/
+- Segment: https://docs.ultralytics.com/de/tasks/segment/#models
+
+Es bietet sich an folgende Ordnerstruktur für die Modelle anzulegen:
+
+```
+    Yolov11:\
+    └── env\
+    └── models\
+        ├── detect\
+        |       └── yolo11n.pt
+        |       └── yolo11n.onnx      
+        ├── segment\
+        |       └── yolo11n-seg.pt
+        |       └── yolo11n-seg.onnx  
+```
+
+### 4.7. Testen
+Im Verzeichnis `Ultralytics` befinden sich Python-Skripte, um Training, Export und Inferenz zu testen.
+```
+    Yolov11:\
+    └── env\
+    └── models\
+    └── Ultralytics\
+        ├── export.py
+        ├── predict.py
+        ├── train.py
+        ├── validate.py
+```
+
+### 🚧 Weitere Abschnitte sind noch im Aufbau...!
+
+
 
