@@ -13,6 +13,8 @@ Download Version 3.31.6: https://cmake.org/download/
 
 ⚠️ Add CMAKE to the PATH environment variable anwählen!
 
+Prüfen, ob CMake richtig installiert ist mit  ```cmake --version```
+
 ### 1.4. Visual Studio 2022 installieren/updaten
 Version 17.13.4
 
@@ -50,13 +52,15 @@ Unter Systemvariablen sollte
 
 zu finden sein.
 
+Außerdem unter ```Path --> C:\Program Files\NVIDIA\CUDNN\v9.5\bin\12.6``` hinzufügen
+
 ### 1.9. Rechner neu starten
 Anschließend Eingabeaufforderung öffnen und folgendes prüfen:
 
 ```
 python -V
 ``` 
-✅ Python 3.11.9
+✅ Python 3.12.9
 
 ```
 nvcc -V
@@ -126,14 +130,33 @@ Jetzt tauchen neue Optionen (rot hinterlegt) auf. Folgende Optionen hinzufügen:
 - CUDA_ARCH_BIN --> für RTX 3080 >= 8.6 drin lassen
 Compute Capability je GPU kann hier https://developer.nvidia.com/cuda-gpus nachgesehen werden.
 
+Außerdem tauchen ein paar Fehler auf, da die cuDNN Libraries nicht gefunden werden. Diese kann man manuell setzen (sofern die Option 'advanced' aktiviert ist)
+- CUDNN_LIBRARY: C:/Program Files/NVIDIA/CUDNN/v9.8/lib/12.8/x64/cudnn.lib
+
 Und wieder erneut `Configure` Button drücken.
 
-Jetzt sollten ein paar Fehler auftauchen, da die cuDNN Libraries nicht gefunden werden. Diese kann man manuell setzen (sofern die Option 'advanced' aktiviert ist)
+Zuletzt noch das 'Include'-Verzeichnis angeben und nicht gefundene Video CVodecs entfernen
 
-- CUDNN_INCLUDE_DIR: C:/Program Files/NVIDIA/CUDNN/v9.5/include/12.6
-- CUDNN_LIBRARY: C:/Program Files/NVIDIA/CUDNN/v9.5/lib/12.6/x64/cudnn.lib
+- CUDNN_INCLUDE_DIR: C:/Program Files/NVIDIA/CUDNN/v9.8/include/12.8
+- WITH_NVCUVID=OFF
+- WITH_NVCUVENC=OFF
 
 Jetzt sollte die Configuration fehlerfrei sein.
+
+#### Python Support (optional)
+Notwendige Python-Pfade können mit folgendem Befehl herausgefunden werden:
+```
+python -c "from sysconfig import get_paths; info = get_paths(); print('\n'.join(f'{k}: {v}' for k, v in info.items()))"
+````
+ Für Python anschließend folgende Pfade angeben:
+ - PYTHON3_EXECUTABLE: C:/Users/<user_name>>/AppData/Local/Programs/Python/Python312/python.exe 
+ (kann in Konsole mit Befehl ```where python``` heausgefunden werden)
+- PYTHON3_INCLUDE_DIR: C:/Users/<user_name>>/AppData/Local/Programs/Python/Python312/include 
+- PYTHON3_LIBRARY: C:/Users/<user_name>/AppData/Local/Programs/Python/Python312/libs/python312.lib
+- PYTHON3_NUMPY_INCLUDE_DIRS: C:/Users/<user_name>/AppData/Local/Programs/Python/Python312/Lib/site-packages/numpy/_core/include 
+(```python -c "import numpy as np; print(np.get_include())"```)
+- PYTHON3_PACKAGES_PATH: C:/Users/<user_name>/AppData/Local/Programs/Python/Python312/Lib/site-packages
+
 
 Abschließend `Generate` drücken.
 
@@ -199,7 +222,7 @@ Torchvision muss für GPU support manuell nachinstalliert werden!
 Download latest python whl: https://download.pytorch.org/whl/torchvision/
 
 ```
-pip install C:\Users\FPingel\Downloads\torchvision-0.21.0+cu126-cp311-cp311-win_amd64.whl
+pip install <PATH-TO-TORCHVISION.WHL>\torchvision-0.21.0+cu126-cp312-cp312-win_amd64.whl
 ```
 
 Mit `pip list` prüfen, ob die '+cu126' Build-Variante hinter den torch-Versionen steht.
@@ -236,6 +259,29 @@ Im Verzeichnis `Ultralytics` befinden sich Python-Skripte, um Training, Export u
         ├── train.py
         ├── validate.py
 ```
+
+# 5. NVIDIA | TensorRT
+
+## 5.1. TensorRT installieren
+
+Download TensorRT 10.9 zip-Package für Windows (GA Version für 'General Availability'!): https://developer.nvidia.com/tensorrt/download/10x
+
+Entpacken und Inhalt von *TensorRT-10.9.0.34* unter ```C:\Program Files\NVIDIA``` kopieren.
+
+TensorRT Bibliotheksdateien zum Systempfad *Path* als Umgebungsvariable hinzufügen. 
+
+```
+C:\Program Files\NVIDIA\TensorRT-10.9.0.34\lib
+```
+
+Weitere Infos unter: https://docs.nvidia.com/deeplearning/tensorrt/latest/installing-tensorrt/installing.html
+
+
+
+## 5.2 Anwenden der Engine
+
+Infos zur Einrichtung und Anwendung der Engine siehe gesonderte [readme.md](./TensorRT/readme.md)
+
 
 ### 🚧 Weitere Abschnitte sind noch im Aufbau...!
 

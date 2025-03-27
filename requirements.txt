@@ -1,2 +1,4 @@
-ultralytics
-tensorrt
+ultralytics==8.3.91
+tensorrt==10.9.0.34
+wget==3.2
+pycuda==2025.1

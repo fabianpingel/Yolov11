@@ -1,0 +1,21 @@
+#Virtuelle Umgebung
+/env
+/.vscode
+/.vs
+
+
+# Alle Dateien im models-Ordner ignorieren
+/models/* 
+
+# Verzeichnisse
+/datasets
+/TensorRT/build*
+/runs
+/OpenCV_DNN
+
+# Dateien
+
+result*
+main.py
+
+
