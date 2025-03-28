@@ -2,6 +2,12 @@
 from typing import Final
 
 
+DEBUG: bool = False # Codeanpassungen für Debug-Modus in VS Code (wg. Powershell)
+
+BENCHMARK: bool = True
+BENCHMARK_REPEATS: int = 10
+
+
 # Konfidenz-Schwellenwert für die Erkennung (nur Objekte mit höherer Wahrscheinlichkeit als dieser Wert werden akzeptiert)
 CONF_THRESH: Final[float] = 0.5  
 # Intersection over Union (IoU) Schwellenwert für Non-Maximum Suppression (NMS)

@@ -1,3 +1,7 @@
+# Allgemein
+__pycache__
+
+
 #Virtuelle Umgebung
 /env
 /.vscode
@@ -8,14 +12,26 @@
 /models/* 
 
 # Verzeichnisse
-/datasets
+#/datasets/*
+
+# TensorRT
 /TensorRT/build*
+*.wts
+*.engine
+*.pt
+*.onnx
+
+# Ultralytics
 /runs
+
+
+
+# OpenCV
 /OpenCV_DNN
 
-# Dateien
+# sonstige Dateien
 
 result*
 main.py
-
+temp.py
 

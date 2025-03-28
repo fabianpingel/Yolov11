@@ -221,8 +221,14 @@ Torchvision muss für GPU support manuell nachinstalliert werden!
 
 Download latest python whl: https://download.pytorch.org/whl/torchvision/
 
-```
-pip install <PATH-TO-TORCHVISION.WHL>\torchvision-0.21.0+cu126-cp312-cp312-win_amd64.whl
+``` shell
+# Download whl Datei
+python -m wget -o torchvision-0.21.0+cu126-cp312-cp312-win_amd64.whl https://download.pytorch.org/whl/cu126/torchvision-0.21.0-cp312-cp312-linux_aarch64.whl#sha256=2ca42d8ccabd3da378f021131813718aab170f302e988a52b24dfeec25a80ef0
+
+pip install torchvision-0.21.0+cu126-cp312-cp312-win_amd64.whl
+# alternativ mit
+pip install torchvision==0.21.0+cu126 --index-url https://download.pytorch.org/whl/cu126
+
 ```
 
 Mit `pip list` prüfen, ob die '+cu126' Build-Variante hinter den torch-Versionen steht.

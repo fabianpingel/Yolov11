@@ -28,7 +28,7 @@ def parse_args() -> tuple:
     parser.add_argument(
         '-o', '--output', help='Ausgabepfad zur Datei (.wts) (optional)')
     parser.add_argument(
-        '-t', '--type', type=str, default='detect', choices=['detect', 'cls', 'seg', 'pose'],
+        '-t', '--type', type=str, default='detect', choices=['det', 'cls', 'seg', 'pose'],
         help='bestimmt den Modelltyp: Detection/Classification/Segmentation/Pose')
     args = parser.parse_args()
 

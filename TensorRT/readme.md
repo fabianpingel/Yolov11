@@ -28,7 +28,7 @@ Die Yolo11-Modelle unterstützten TensorRT-8, FP32/FP16/INT8 und Python/C++ API.
 ```shell
 cd <PATH-TO-TENSORRT>
 
-python gen_wts.py -w ../models/detect/yolo11n.pt -o yolo11n.wts -t detect
+python gen_wts.py -w ../models/detect/yolo11n.pt -o yolo11n.wts -t det
 
 python gen_wts.py -w ../models/segment/yolo11n-seg.pt -o yolo11n-seg.wts -t seg
 
@@ -49,11 +49,13 @@ make
 ```shell
 cp [PATH-TO-WTS_File]/yolo11n.wts .
 
+# Im build-Verzeichnis ausführen
+
 # TensorRT-Engine aufbauen und serialisieren
-Release\yolo11_det.exe -s ..\yolo11n.wts yolo11n.engine [n/s/m/l/x]
+Release\yolo11_det.exe -s ..\yolo11n.wts ..\yolo11n.engine n # [n/s/m/l/x]
 
 # Inferenz ausführen
-Release\yolo11_det.exe -d yolo11n.engine ../images [c/g]
+Release\yolo11_det.exe -d ..\yolo11n.engine ..\..\datasets c # [c/g]
 
 # Ergebnisse werden im Build-Verzeichnis (aktuelles Arbeitsverzeichnis) gespeichert.
 ```
@@ -64,14 +66,16 @@ Release\yolo11_det.exe -d yolo11n.engine ../images [c/g]
 ```shell
 cp [PATH-TO-WTS_File]/yolo11n-seg.wts .
 
+# Im build-Verzeichnis ausführen
+
 # TensorRT-Engine aufbauen und serialisieren
-Release\yolo11_seg.exe -s ..\yolo11n-seg.wts yolo11n-seg.engine [n/s/m/l/x]
+Release\yolo11_seg.exe -s ..\yolo11n-seg.wts ..\yolo11n-seg.engine n # [n/s/m/l/x]
 
 # Herunterladen der COCO-Labels
-python -m wget -o coco.txt https://raw.githubusercontent.com/amikelive/coco-labels/master/coco-labels-2014_2017.txt
+python -m wget -o ..\datasets\coco.names https://raw.githubusercontent.com/amikelive/coco-labels/master/coco-labels-2014_2017.txt
 
 # Inferenz ausführen
-Release\yolo11_seg.exe -d yolo11n-seg.engine ../images c coco.txt
+Release\yolo11_seg.exe -d ..\yolo11n-seg.engine ..\..\datasets c coco.names # [c/g]
 ```
 
 

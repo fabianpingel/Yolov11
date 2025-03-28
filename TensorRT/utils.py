@@ -40,12 +40,18 @@ def get_img_path_batches(batch_size: int, img_dir: str) -> List[List[str]]:
     if not os.path.isdir(img_dir):
         raise FileNotFoundError(f"Fehler: Das Verzeichnis '{img_dir}' existiert nicht oder ist nicht zugänglich.")
 
+    # Erlaubte Bildendungen definieren
+    valid_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif", ".gif"}
+
     batches: List[List[str]] = []  # Liste zur Speicherung der Batches
     batch: List[str] = []  # Temporäre Liste für den aktuellen Batch
 
     # Durchsucht das Verzeichnis rekursiv nach Dateien
     for root, _, files in os.walk(img_dir):
         for name in sorted(files):  # Sortiert die Dateien für eine konsistente Reihenfolge
+            if os.path.splitext(name)[1].lower() not in valid_extensions:
+                continue  # Nicht-Bild-Dateien überspringen
+
             file_path = os.path.join(root, name)
             
             # Wenn der aktuelle Batch voll ist, wird er gespeichert und eine neue Liste gestartet
@@ -73,7 +79,7 @@ def plot_one_box(
     """
     Zeichnet eine Bounding Box auf ein Bild.
 
-    :param x: Liste mit den Koordinaten der Bounding Box [x1, y1, x2, y2].
+    :param x: Liste/NumPy-Array mit den Koordinaten der Bounding Box [x1, y1, x2, y2].
     :param img: OpenCV-Bild (NumPy-Array), auf das die Bounding Box gezeichnet wird.
     :param color: Farbe der Bounding Box als (R, G, B)-Tupel, z. B. (0, 255, 0) für Grün.
     :param label: Text, der über der Bounding Box angezeigt wird (optional).
@@ -82,8 +88,12 @@ def plot_one_box(
     """
 
     # Fehlerbehandlung für ungültige Eingaben
-    if not isinstance(x, list) or len(x) != 4:
-        raise ValueError("Fehler: Die Bounding Box-Koordinaten müssen eine Liste mit genau 4 Werten sein.")
+    # Überprüfen, ob x eine Liste oder ein numpy Array mit genau 4 Werten ist
+    if isinstance(x, (list, np.ndarray)):
+        if len(x) != 4:
+            raise ValueError("Fehler: Die Bounding Box-Koordinaten müssen eine Liste oder ein numpy Array mit genau 4 Werten sein.")
+    else:
+        raise TypeError("Fehler: Die Bounding Box muss eine Liste oder ein numpy Array sein.")
 
     if not isinstance(img, np.ndarray):
         raise TypeError("Fehler: Das Bild muss ein NumPy-Array sein (OpenCV-Format).")

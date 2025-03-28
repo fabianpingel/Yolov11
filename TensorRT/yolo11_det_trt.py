@@ -31,7 +31,9 @@ logger = logging.getLogger(__name__)
 
 
 # Lade COCO-Kategorien aus einer Datei
-coco_labels_path = Path.cwd() / "datasets" / "coco.names"  # Datei muss im gleichen Verzeichnis sein oder absoluten Pfad nutzen
+coco_labels_path = Path.cwd().parent / "datasets" / "coco.names"  # Datei muss im gleichen Verzeichnis sein oder absoluten Pfad nutzen
+coco_labels_path = Path.cwd() / "datasets" / "coco.names" if config.DEBUG else coco_labels_path
+#logger.info(coco_labels_path)
 categories = load_coco_labels(coco_labels_path)
 if not categories:
     logger.warning("Warnung: Keine COCO-Labels geladen. Überprüfe die Datei.")
@@ -453,9 +455,13 @@ def main() -> None:
     """
     try:
         # Lade benutzerdefiniertes Plugin und Engine-Datei
-        PLUGIN_LIBRARY = Path.cwd() / "TensorRT" / "build" / "Release" / "myplugins.dll"
+        if config.DEBUG: 
+            PLUGIN_LIBRARY = Path.cwd() / "TensorRT" / "build" / "Release" / "myplugins.dll"
+            engine_file_path = Path.cwd() / "TensorRT" / "yolo11n.engine"
+        else:
+            PLUGIN_LIBRARY = Path.cwd() / "build" / "Release" / "myplugins.dll"
+            engine_file_path = Path.cwd() / "yolo11n.engine"
         logger.info(PLUGIN_LIBRARY)
-        engine_file_path = Path.cwd() / "TensorRT" / "build" / "yolo11n.engine"
         logger.info(engine_file_path)
 
         # Falls Kommandozeilenargumente übergeben wurden, verwende diese
@@ -484,8 +490,15 @@ def main() -> None:
         try:
             logger.info(f'Batch Size: {yolo11_wrapper.batch_size}')
 
-            image_dir = Path.cwd() / "TensorRT" / "images"
+            if config.DEBUG:
+                image_dir = Path.cwd() / "datasets"
+            else:
+                image_dir = Path.cwd().parent / "datasets"
+            logger.info(image_dir)
             image_path_batches = get_img_path_batches(yolo11_wrapper.batch_size, str(image_dir))
+            # Wenn Benchmark Funktion aktiv
+            image_path_batches = image_path_batches * config.BENCHMARK_REPEATS if config.BENCHMARK else image_path_batches
+
 
             # Warm-up Durchläufe für das Modell
             for _ in range(10):

@@ -1,4 +1,9 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.26)
+# https://forums.developer.nvidia.com/t/cmake-error-opencv-cuda-cmakelists-txt/260691
+# CMake ab Version 3.27 kennt FindCUDA nicht mehr. Deshalb Warnungen unterdruecken
+if(POLICY CMP0146)
+    cmake_policy(SET CMP0146 OLD)  # Damit nutze OpenCV weiter das alte FindCUDA
+endif()
 
 project(yolo11)
 
